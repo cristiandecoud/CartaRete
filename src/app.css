@@ -1,0 +1,21 @@
+:root {
+	--sides-color: rgb(41, 41, 41);
+	--aspect-ratio: 1.68;
+	--card-width: 300px;
+	--card-height: calc(var(--card-width) * var(--aspect-ratio));
+	--card-thickness: 35px;
+	--center-sides: calc((var(--card-width) / 2) - var(--card-thickness) / 2);
+	--center-top-bottom: calc((var(--card-height) / 2) - var(--card-thickness) / 2);
+	--translate-z-sides: calc(var(--card-width) / 2);
+	--translate-z-top-bottom: calc(var(--card-height) / 2);
+	--shadow-layers: drop-shadow(8px 8px 8px #000000e1);
+}
+
+html {
+	font-family: system-ui, sans-serif;
+	background: #13151a;
+}
+
+h1 {
+	color: red;
+}
