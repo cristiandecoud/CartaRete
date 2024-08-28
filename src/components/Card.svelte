@@ -40,22 +40,23 @@
 		return `transform: translateZ(${(numberLayers - 1) * gap + 5}px)`;
 	}
 
-	layers.subscribe((item: any) => console.log(item));
-
-	numberLayers = countLayers($layers);
-	gap = setGap(numberLayers, cardWidth);
+	
 	onMount(() => {
 		let wrapper = document.getElementById('wrapper');
 		let card = document.getElementById('card');
-
+		
 		wrapper?.addEventListener('mouseover', (event) => {
 			const target = event.target;
 			document.onmousemove = (event) => {
 				let x = event.x;
 				let y = event.y;
 				if (card)
-					card.style.transform = `rotate3d(${(x - 390) / 10}, ${(y - 276) / 10}, ${0.2}, 25deg)`;
+				card.style.transform = `rotate3d(${(x - 390) / 10}, ${(y - 276) / 10}, ${0.2}, 25deg)`;
 			};
+		});
+		layers.subscribe((layers: any) => {
+			numberLayers = countLayers(layers);
+			gap = setGap(numberLayers, cardWidth);
 		});
 	});
 </script>

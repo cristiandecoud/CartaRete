@@ -6,12 +6,10 @@
 	const conf = {
 		cardWidth: 45
 	};
+	console.log($fileNames)
 </script>
 
 <main>
-	{#each $fileNames as file}
-		<h3>{file.name}</h3>
-	{/each}
 	<Card {conf} layers={fileNames} />
 	<LayerUploader />
 </main>
