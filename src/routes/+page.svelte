@@ -6,7 +6,6 @@
 	const conf = {
 		cardWidth: 45
 	};
-	console.log($fileNames)
 </script>
 
 <main>

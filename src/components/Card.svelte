@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import type { Layer } from '../stores/layerFiles';
+
+	import marco from '../lib/images/marco1.png';
 
 	interface Props {
 		conf: { cardWidth: number };
@@ -21,10 +24,11 @@
 	export let conf;
 
 	let gap = 15;
-	let numberLayers = 0;
+	let numberOfLayers = 0;
 	const cardWidth = conf.cardWidth;
+	let currentLayers: Layer[];
 
-	function countLayers(layers: string[]): number {
+	function countLayers(layers: Layer[]): number {
 		return layers.length;
 	}
 
@@ -51,30 +55,29 @@
 				let x = event.x;
 				let y = event.y;
 				if (card)
-				card.style.transform = `rotate3d(${(x - 390) / 10}, ${(y - 276) / 10}, ${0.2}, 25deg)`;
+				card.style.transform = `rotate3d(${(x - 390) / 10}, ${(y - 276) / 10}, ${0.2}, 15deg)`;
 			};
 		});
 		layers.subscribe((layers: any) => {
-			numberLayers = countLayers(layers);
-			gap = setGap(numberLayers, cardWidth);
+			numberOfLayers = countLayers(layers);
+			gap = setGap(numberOfLayers, cardWidth);
+			currentLayers = layers
 		});
 	});
 </script>
-
 <div id="wrapper">
 	<div class="card" id="card">
-		{#each $layers as layer, i}
-			<div class="layer" style={setLayerSeparation(i)}>
-				<img src={layer} alt="" />
+		{#if $layers.length}
+			{#each $layers as layer, i}
+				<div class="layer" style={setLayerSeparation(i)}>
+					<img src={layer.file} alt={layer.name} />
+				</div>
+			{/each}
+
+			<div class="layer last" style={setSeparationLastLayer(numberOfLayers, gap)}>
+				<img src={marco} alt='marco'/>
 			</div>
-		{/each}
-
-		<div class="layer last" style={setSeparationLastLayer(numberLayers, gap)}></div>
-
-		<div class="left side"></div>
-		<div class="right side"></div>
-		<div class="top side"></div>
-		<div class="bottom side"></div>
+		{/if}
 	</div>
 </div>
 
@@ -95,7 +98,6 @@
 	#wrapper {
 		grid-column: 1 / 2;
 		grid-row: 1/ 5;
-		background-color: blue;
 		width: var(--card-width);
 		height: var(--card-height);
 		perspective: 1000px;
@@ -114,8 +116,6 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		/* border: 1px solid #a5a5a5; */
-		/* border-radius: 10px; */
 		padding: 5px;
 		filter: var(--shadow-layers);
 	}
@@ -132,42 +132,7 @@
 	}
 
 	.last {
-		border: 15px solid #000000e1;
-		filter: drop-shadow(0px 0px 0px #000000e1);
-	}
-
-	.side {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		background-color: var(--sides-color);
-	}
-
-	.left {
-		transform: rotateY(-90deg) translateZ(var(--translate-z-sides))
-			translateX(calc(var(--card-thickness) / 2));
-		width: var(--card-thickness);
-		left: var(--center-sides);
-	}
-
-	.right {
-		transform: rotateY(90deg) translateZ(var(--translate-z-sides))
-			translateX(calc(-1 * var(--card-thickness) / 2));
-		width: var(--card-thickness);
-		left: var(--center-sides);
-	}
-
-	.bottom {
-		transform: rotateX(-90deg) translateZ(var(--translate-z-top-bottom))
-			translateY(calc(-1 * var(--card-thickness) / 2));
-		height: var(--card-thickness);
-		top: var(--center-top-bottom);
-	}
-
-	.top {
-		transform: rotateX(90deg) translateZ(var(--translate-z-top-bottom))
-			translateY(calc(var(--card-thickness) / 2));
-		height: var(--card-thickness);
-		top: var(--center-top-bottom);
+		border: none;
+		scale: 1.15
 	}
 </style>

@@ -1,46 +1,138 @@
 <script lang="ts">
-	import { addLayers, clean } from '../stores/layerFiles';
-	let files: any
-	let input:any
+	import { addLayers, clean, fileNames } from '../stores/layerFiles';
+	let files: any = []
+	let input: any
 
-	async function applyImages() {
+	function applyImages() {
 		if (!files) return;
+		clean()
 
 		for (let i = 0; i < files.length; i++) {
 			const file = files[i]
 			const reader = new FileReader()
 			reader.onload = (e: ProgressEvent<FileReader>) => {
 				if (!e.target) return
-				addLayers([e.target.result])
+				addLayers([{file: e.target.result, name: file.name, position: i}])
 			};
 			reader.readAsDataURL(file)
 		}	
+		fileNames.subscribe(item => console.log(item))
 	}
 
 	function cleanImages() {
 		clean()
-		input.value=''
-		files = null
+		files = []
 	}
+
+	function changePosition(index: number, direction: number) {
+		console.log(index, direction);	
+		const dt = new DataTransfer();
+		
+		if (files) {
+			for (let i = 0; i < files.length; i++) {
+				if (i == index) {
+					dt.items.add(files[i + direction]);
+				} else if (i == index + direction) {
+					dt.items.add(files[i - direction]);
+				} else {
+					dt.items.add(files[i]);
+				}
+			}
+		}
+
+		files = dt.files;
+}
 </script>
 
-<div>
-	<input bind:files bind:this={input} type="file" multiple />
-	{#if files}
-		{#each files as file}
-			<pre id="list">Selected files: {file.name}</pre>
+<section>
+	{#if files.length}
+		<h1>Selected files: </h1>
+		<h4>Please order the images</h4>
+		{#each files as file, i}
+			<ol>
+				<p id="list">
+					{#if i + 1 != files.length}
+						<button id='arrow' on:click={() => changePosition(i, 1)}>&#8595;</button>
+					{/if}
+					{#if i != 0 }
+						<button id='arrow' on:click={() => changePosition(i, -1)}>&#8593;</button>
+					{/if}
+					{i + 1} - {file.name} 
+				</p>
+			</ol>
 		{/each}
+		<article >
+			<button class='load' on:click={applyImages}>Load all images</button>
+			<button class='clean' on:click={cleanImages}>Clean</button>
+		</article>
+	{:else}
+		<input bind:files bind:this={input} type="file" multiple />
 	{/if}
-	<button on:click={applyImages}>Load all images</button>
-	<button on:click={cleanImages}>Clean</button>
-</div>
+</section>
 
 <style>
-	div {
+	#list {
+		margin: 0;
+	}
+
+	.clean {
+		background-color: #b32400;
+	}
+
+	.load {
+		background-color: #4DB6Af;
+	}
+
+	ol {
+		margin: 0;
+	}
+
+	p {
+		border: 2px solid grey;
+		border-radius: 2px;
+	}
+	section {
 		min-height: 200px;
 		background-color: black;
 		grid-column: 2 / 5;
 		grid-row: 1/ 3;
-		padding: 10px;
+		border: 10px solid black;
+		border-radius: 10px;
+	}
+
+	input::file-selector-button {
+		margin: 10px;
+		padding: 3%;
+		font-size: large;
+		background-color: #f96743;
+		color: #fdfdfd;
+		border: none;
+		border-radius: 10px;
+		transition: scale 0.1s, background-color 0.1s;
+	}
+
+	input[type='file'] {
+		color:rgba(0, 0, 0, 0);
+	}
+
+	input::file-selector-button:hover {
+		background-color: #fd4517;
+		scale: 1.1 ;
+	}
+
+	button {
+		margin: 10px;
+		padding: 1%;
+		font-size: large;
+		background-color: #f96743;
+		color: #fdfdfd;
+		border: none;
+		border-radius: 10px;
+		transition: scale 0.1s, background-color 0.1s;
+	}
+
+	button:hover {
+		background-color: #fd4517;
+		scale: 1.1 ;
 	}
 </style>

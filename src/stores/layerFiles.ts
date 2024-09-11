@@ -1,19 +1,33 @@
-import { writable } from 'svelte/store';
+import { writable, type Writable } from 'svelte/store';
+export interface Layer {
+	name: string
+	file: any;
+	position: number
+}
 
-export const name = writable('');
-export const fileNames = writable([]);
+export const fileNames: Writable<Layer[]> = writable([]);
 
-export function addLayers(files: any) {
-	console.log(files)
+export function addLayers(files: Layer[]) {
 	fileNames.update((names: any) => {
-		if (!names || !files) return names
+		if (!names || !files) return names;
+
+		// Añadir los archivos ordenados a la lista 'names'
 		for (const file of files) {
-			names.unshift(file)
+			// Insertar en la posición correcta según 'position'
+			const index = names.findIndex((item: Layer) => item.position > file.position);
+			if (index === -1) {
+				names.push(file); // Añadir al final si no hay un índice mayor
+			} else {
+				names.splice(index, 0, file); // Insertar en la posición correspondiente
+			}
 		}
-		return names
+
+		return names;
 	});
 }
 
 export function clean() {
 	fileNames.set([])
 }
+
+
