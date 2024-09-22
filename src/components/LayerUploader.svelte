@@ -62,7 +62,7 @@
 			</ol>
 		{/each}
 		<article >
-			<button class='load' on:click={applyImages}>Load all images</button>
+			<button class='load' on:click={applyImages}>Show card</button>
 			<button class='clean' on:click={cleanImages}>Clean</button>
 		</article>
 	{:else}
@@ -95,44 +95,10 @@
 		min-height: 200px;
 		background-color: black;
 		grid-column: 2 / 5;
-		grid-row: 1/ 3;
+		grid-row: 3 / 5;
 		border: 10px solid black;
 		border-radius: 10px;
 	}
 
-	input::file-selector-button {
-		margin: 10px;
-		padding: 3%;
-		font-size: large;
-		background-color: #f96743;
-		color: #fdfdfd;
-		border: none;
-		border-radius: 10px;
-		transition: scale 0.1s, background-color 0.1s;
-	}
 
-	input[type='file'] {
-		color:rgba(0, 0, 0, 0);
-	}
-
-	input::file-selector-button:hover {
-		background-color: #fd4517;
-		scale: 1.1 ;
-	}
-
-	button {
-		margin: 10px;
-		padding: 1%;
-		font-size: large;
-		background-color: #f96743;
-		color: #fdfdfd;
-		border: none;
-		border-radius: 10px;
-		transition: scale 0.1s, background-color 0.1s;
-	}
-
-	button:hover {
-		background-color: #fd4517;
-		scale: 1.1 ;
-	}
 </style>

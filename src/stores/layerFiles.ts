@@ -9,7 +9,7 @@ export const fileNames: Writable<Layer[]> = writable([]);
 
 export function addLayers(files: Layer[]) {
 	fileNames.update((names: any) => {
-		if (!names || !files) return names;
+		if (!files) return names;
 
 		// Añadir los archivos ordenados a la lista 'names'
 		for (const file of files) {

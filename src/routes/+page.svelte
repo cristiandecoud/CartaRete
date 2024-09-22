@@ -1,5 +1,6 @@
 <script>
 	import Card from '../components/Card.svelte';
+	import LayerSettings from '../components/LayerSettings.svelte';
 	import LayerUploader from '../components/LayerUploader.svelte';
 	import { fileNames } from '../stores/layerFiles';
 
@@ -10,6 +11,7 @@
 
 <main>
 	<Card {conf} layers={fileNames} />
+	<LayerSettings />
 	<LayerUploader />
 </main>
 
@@ -28,4 +30,6 @@
 		grid-gap: 15px;
 		grid-auto-rows: minmax(100px, auto);
 	}
+
+	
 </style>

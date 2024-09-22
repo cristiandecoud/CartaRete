@@ -9,9 +9,67 @@
 	--translate-z-sides: calc(var(--card-width) / 2);
 	--translate-z-top-bottom: calc(var(--card-height) / 2);
 	--shadow-layers: drop-shadow(8px 8px 8px #000000e1);
+
+	/******BUTTONS*******/
+	--main-color-button: #f96743;
+	--main-color-button-hover: #fd4517;
+
+	/*******INPUT********/
+	--background-color-input: #505050;
+	--background-color-input-disabled: #242424;
 }
 
 html {
 	font-family: system-ui, sans-serif;
 	background: #13151a;
+}
+
+button {
+	margin: 10px;
+	padding: 1%;
+	font-size: large;
+	background-color: var(--main-color-button);
+	color: #fdfdfd;
+	border: none;
+	border-radius: 10px;
+	transition: scale 0.1s, background-color 0.1s;
+}
+
+button:hover {
+	background-color: var(--main-color-button-hover);
+	scale: 1.1 ;
+}
+
+input, select {
+	background-color: var(--background-color-input);
+	color: aliceblue;
+	border-radius: 5px;
+	border: none;
+	height: 30px;
+}
+
+input:disabled, select:disabled {
+	background-color: var(--background-color-input-disabled);
+}
+
+input[type='file'] {
+	color: rgba(0, 0, 0, 0);
+	background-color: black;
+	height: 50px;
+}
+
+input::file-selector-button {
+	margin: 10px;
+	padding: 3%;
+	font-size: large;
+	background-color: #f96743;
+	color: #fdfdfd;
+	border: none;
+	border-radius: 10px;
+	transition: scale 0.1s, background-color 0.1s;
+}
+
+input::file-selector-button:hover {
+	background-color: #fd4517;
+	scale: 1.1 ;
 }
